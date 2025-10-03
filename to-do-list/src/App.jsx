@@ -7,6 +7,17 @@ function App() {
   const [editingIndex, setEditingIndex] = useState(null);
   const [showConfetti, setShowConfetti] = useState(false);
 
+  useEffect(() => {
+    const savedTodos = localStorage.getItem("todos");
+    if(savedTodos) {
+      setTodos(JSON.parse(savedTodos));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("todos", JSON.stringify(todos));
+  }, [todos]);
+
   const addTodo = () => {
     if(task.trim() === "") return;
     setTodos([...todos, { text : task , completed : false}]);
