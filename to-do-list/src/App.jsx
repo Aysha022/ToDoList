@@ -3,10 +3,11 @@ import { useState }  from "react";
 function App() {
   const [todos, setTodos] = useState([]);
   const [task, setTask] = useState("");
+  const [editingIndex, setEditingIndex] = useState(null);
 
   const addTodo = () => {
     if(task.trim() === "") return;
-    setTodos([...todos, task]);
+    setTodos([...todos, { text : task }]);
     setTask("");
   };
 
@@ -22,6 +23,9 @@ function App() {
             value = {task}
             onChange = {(e) => setTask(e.target.value)}
             placeholder = "Add a new task"
+            onKeyDown = {(e) => {
+              if(e.key === "Enter") addTodo();
+            }}
             className="px-3 py-2 flex-grow rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
           />
 
@@ -33,9 +37,30 @@ function App() {
         <ul className="mt-6 w-full max-w-md space-y-2">
           {todos.map((todo, index) => (
             <li key={index} 
-              className="px-3 py-2 bg-gray-50 border rounded-lg"
+              className="flex justify-between items-center px-3 py-2 bg-gray-50 border rounded-lg"
             >
-              <span className="text-green-900">{todo}</span>
+              {editingIndex === index ? (
+                <input
+                  type = "text"
+                  value  = {todo.text}
+                  onChange = {(e) => {
+                    const newTodos = [...todos];
+                    newTodos[index].text = e.target.value;
+                    setTodos(newTodos);
+                  }}
+                  onBlur = {() => setEditingIndex(null)}
+                  onKeyDown = {(e) => {
+                    if(e.key === "Enter") setEditingIndex(null);
+                  }}
+                  autoFocus
+                  className="flex-grow px-2 py-1 border rounded-md"
+                />
+                 ) : (
+                  <span className="text-green-900">{todo.text}</span>
+                 )}
+                 <button onClick={() => setEditingIndex(index)} className="ml-2 px-2 py-1 bg-yellow-300 text-white rounded-md hover:bg-yellow-400 transition">
+                  Edit
+                 </button>
             </li>
           ))}
        </ul>
