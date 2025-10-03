@@ -11,6 +11,11 @@ function App() {
     setTask("");
   };
 
+  const deleteTodo = (deleteIndex) => {
+    const newTodos = todos.filter((_, index) => index !== deleteIndex);
+    setTodos(newTodos);
+  }
+
   return (
     <div className = "min-h-screen flex justify-center bg-blue-100">
       <div className="bg-green-300 shadow-lg rounded-xl px-20 py-10 w-full">
@@ -38,6 +43,7 @@ function App() {
           {todos.map((todo, index) => (
             <li key={index} 
               className="flex justify-between items-center px-3 py-2 bg-gray-50 border rounded-lg">
+
               <div className="flex items-center flex-grow">
                 <input     
                   type = "checkbox"
@@ -75,9 +81,18 @@ function App() {
                     </span>
                     )}
                   </div>
-                  <button onClick={() => setEditingIndex(index)} className="ml-1 px-1 py-1 bg-yellow-300 rounded-md hover:bg-yellow-400 transition">
-                    ✏️
-                 </button>
+
+                  <div className="flex gap-2">
+                    <button onClick={() => setEditingIndex(index)} 
+                    className="ml-1 px-1 py-1 bg-yellow-300 rounded-md hover:bg-yellow-400 transition">
+                      ✏️
+                    </button>
+
+                    <button onClick = {() => deleteTodo(index)}
+                      className="px-2 py-1 bg-red-400 text-white rounded-md hover:bg-red-500 transition">
+                        🗑️
+                    </button>
+                 </div>
             </li>
           ))}
          
