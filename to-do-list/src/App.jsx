@@ -7,7 +7,7 @@ function App() {
 
   const addTodo = () => {
     if(task.trim() === "") return;
-    setTodos([...todos, { text : task }]);
+    setTodos([...todos, { text : task , completed : false}]);
     setTask("");
   };
 
@@ -37,32 +37,50 @@ function App() {
         <ul className="mt-6 w-full max-w-md space-y-2">
           {todos.map((todo, index) => (
             <li key={index} 
-              className="flex justify-between items-center px-3 py-2 bg-gray-50 border rounded-lg"
-            >
-              {editingIndex === index ? (
-                <input
-                  type = "text"
-                  value  = {todo.text}
-                  onChange = {(e) => {
-                    const newTodos = [...todos];
-                    newTodos[index].text = e.target.value;
-                    setTodos(newTodos);
+              className="flex justify-between items-center px-3 py-2 bg-gray-50 border rounded-lg">
+              <div className="flex items-center flex-grow">
+                <input     
+                  type = "checkbox"
+                  checked = {todo.completed}
+                  onChange = {() => {
+                        const newTodos = [...todos];
+                        newTodos[index].completed = !newTodos[index].completed;
+                        setTodos(newTodos);
                   }}
-                  onBlur = {() => setEditingIndex(null)}
-                  onKeyDown = {(e) => {
-                    if(e.key === "Enter") setEditingIndex(null);
-                  }}
-                  autoFocus
-                  className="flex-grow px-2 py-1 border rounded-md"
+                  className="mr-2"
                 />
-                 ) : (
-                  <span className="text-green-900">{todo.text}</span>
-                 )}
-                 <button onClick={() => setEditingIndex(index)} className="ml-2 px-2 py-1 bg-yellow-300 text-white rounded-md hover:bg-yellow-400 transition">
-                  Edit
+                
+
+                {editingIndex === index ? (
+                  <input
+                    type = "text"
+                    value  = {todo.text}
+                    onChange = {(e) => {
+                      const newTodos = [...todos];
+                      newTodos[index].text = e.target.value;
+                      setTodos(newTodos);
+                    }}
+                    onBlur = {() => setEditingIndex(null)}
+                    onKeyDown = {(e) => {
+                      if(e.key === "Enter") setEditingIndex(null);
+                    }}
+                    autoFocus
+                    className="flex-grow px-2 py-1 border rounded-md"
+                  />
+                    ) : (
+                    <span className={`text-green-900 ${
+                      todo.completed ? "line-through text-gray-500" : ""}`}
+                    >
+                      {todo.text}
+                    </span>
+                    )}
+                  </div>
+                  <button onClick={() => setEditingIndex(index)} className="ml-1 px-1 py-1 bg-yellow-300 rounded-md hover:bg-yellow-400 transition">
+                    ✏️
                  </button>
             </li>
           ))}
+         
        </ul>
       </div>
       </div>
