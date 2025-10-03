@@ -10,8 +10,7 @@ It allows users to add, edit, mark as done, and delete tasks with progress track
 -  Mark tasks as done/undone  
 -  Edit existing tasks inline  
 -  Delete tasks  
--  Persistent storage using **localStorage**  
--  Progress bar showing completion percentage  
+-  Persistent storage using **localStorage**   
 -  Clean UI with **TailwindCSS**
 
 ---
