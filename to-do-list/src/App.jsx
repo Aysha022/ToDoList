@@ -1,9 +1,11 @@
-import { useState }  from "react";
+import Confetti from "react-confetti";
+import { useState, useEffect }  from "react";
 
 function App() {
   const [todos, setTodos] = useState([]);
   const [task, setTask] = useState("");
   const [editingIndex, setEditingIndex] = useState(null);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   const addTodo = () => {
     if(task.trim() === "") return;
@@ -18,6 +20,7 @@ function App() {
 
   return (
     <div className = "min-h-screen flex justify-center bg-blue-100">
+      {showConfetti && <Confetti />}
       <div className="bg-green-300 shadow-lg rounded-xl px-20 py-10 w-full">
 
       <h1 className="text-2xl font-bold text-center text-green-700 mb-4">To-Do List</h1>
@@ -50,13 +53,18 @@ function App() {
                   checked = {todo.completed}
                   onChange = {() => {
                         const newTodos = [...todos];
-                        newTodos[index].completed = !newTodos[index].completed;
+                        const newCompleted =  !newTodos[index].completed;
+                        newTodos[index].completed = newCompleted;
                         setTodos(newTodos);
+
+                        if(newCompleted) {
+                          setShowConfetti(true);
+                          setTimeout(() => setShowConfetti(false), 7000);
+                        }
                   }}
                   className="mr-2"
                 />
                 
-
                 {editingIndex === index ? (
                   <input
                     type = "text"
